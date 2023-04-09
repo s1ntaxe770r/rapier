@@ -1,5 +1,6 @@
 use k8s_openapi::api::core::v1::Node;
 use kube::api::ListParams;
+use kube::Api;
 pub struct ClusterInfo {
     // in cluster client
     pub in_cluster_client: kube::Client,
@@ -50,5 +51,4 @@ impl ClusterInfo {
     }
 }
 
-// switch context usiing kubectl
-// kubectl config use-context <context-name>
+// 
