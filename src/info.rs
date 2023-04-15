@@ -1,12 +1,23 @@
 use k8s_openapi::api::core::v1::Node;
 use kube::api::ListParams;
 use kube::Api;
+use kube::Error;
+
+// write rustdoc
+
+/// ClusterInfo is a struct that contains information about the cluster, specifically the regions 
+#[derive(Clone)]
 pub struct ClusterInfo {
     // in cluster client
     pub in_cluster_client: kube::Client,
 }
 
 impl ClusterInfo {
+    /// new creates a new ClusterInfo struct
+    /// # Examples
+    /// ```
+    /// let cluster_info = ClusterInfo::new().await;
+    /// ```
     pub async fn new() -> ClusterInfo {
         let in_cluster_client = kube::Client::try_default().await;
         match in_cluster_client {
@@ -20,7 +31,19 @@ impl ClusterInfo {
             }
         }
     }
-    pub async fn get_cluster_region(&self) -> String {
+    /// get_cluster_region gets the region of the cluster
+    /// # Examples
+    /// ``` 
+    /// let cluster_info = ClusterInfo::new().await;    
+    /// let region = cluster_info.get_cluster_region().await;
+    /// ```
+    /// # Panics
+    /// Panics if it cannot get the node list
+    /// # Returns
+    /// A string containing the region of the cluster
+    /// # Errors
+    /// Returns an error if it cannot get the node list
+    pub async fn get_cluster_region(&self) -> Result<String,Error> {
         let nodes = Api::<Node>::all(self.in_cluster_client.clone());
         let list_params = ListParams::default();
         let node_list = nodes.list(&list_params).await;
@@ -32,23 +55,27 @@ impl ClusterInfo {
                     Some(labels) => {
                         match labels.get("failure-domain.beta.kubernetes.io/region") {
                             Some(region) => {
-                                region.to_string()
+                               Ok( region.to_string() )
                             }
                             None => {
-                                "unknown".to_string()
+                                Ok("unknown".to_string())
                             }
                         }
                     }
                     None => {
-                        "unknown".to_string()
+                        Ok("unknown".to_string())
                     }
                 }
             }
             Err(e) => {
-                panic!("Error getting node list: {}", e)
+                // log error using log crate
+                log::error!("Error getting node list: {}", e);
+                Err(Error::from(e))
+               
             }
         }
     }
 }
+
 
 // 
