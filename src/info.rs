@@ -1,4 +1,5 @@
 use k8s_openapi::api::core::v1::Node;
+use k8s_openapi::api::core::v1::Pod;
 use kube::api::ListParams;
 use kube::Api;
 use kube::Error;
@@ -75,6 +76,13 @@ impl ClusterInfo {
             }
         }
     }
+
+    // pub async fn get_pod_name(&self) -> Result<String,Error> {
+    //     let current_pod = Api::<Pod>::
+    //     // match current_pod 
+
+
+    // }
 }
 
 

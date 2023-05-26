@@ -19,4 +19,5 @@ async fn main() -> std::io::Result<()> {
     }).bind(("0.0.0.0", cfg.server_port))?
         .run()
         .await
+
 }

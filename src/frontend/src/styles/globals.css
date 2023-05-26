@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* set background to #171D1C */
+body {
+  background-color: #171D1C;
+}
+
+.heading {
+  color: #D1D2D6;
+}
