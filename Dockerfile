@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy the cargo manifests
 COPY Cargo.toml Cargo.lock ./
 
-# Build the dependencies (cache the dependencies separately)
-RUN mkdir src && echo "fn main() {}" > src/main.rs
-RUN cargo build --release
 
 # Copy the source code
 COPY ./src ./src
