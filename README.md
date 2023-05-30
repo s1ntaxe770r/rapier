@@ -36,7 +36,7 @@ docker buildx build -t  rapier .
 using the docker image you can run the container by mounting your kubeconfig inside the container 
 
 ```
-docker run -it -v /Users/username/Projects/rapier:/app -p 8080:8080 rapier
+ docker run -v ~/.kube/config:/root/.kube/config -p 8080:8080 rapier 
 
 ```
 
@@ -44,8 +44,12 @@ docker run -it -v /Users/username/Projects/rapier:/app -p 8080:8080 rapier
 
 ```
 curl http://localhost:8080/region
-```
 
+```
+returns the region in which the cluster is deployed
+```json
+{"region":"us-east-1"}
+```
 
 
 
